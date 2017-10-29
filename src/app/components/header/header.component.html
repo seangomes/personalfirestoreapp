@@ -1,0 +1,13 @@
+<header>
+<!-- Image and text -->
+<nav class="navbar navbar-light">
+  <a class="navbar-brand">
+    <!-- <img src="/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt=""> -->
+    <span class="logo">Personal app</span>
+  </a>
+
+  <button class="btn btn-primary btn-sm pull-right" (click)="myProfile()" *ngIf="loggedIn"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
+    Profil</button>
+  <button class="btn btn-primary btn-sm pull-right" (click)="signOut()" *ngIf="loggedIn">Logud <i class="fa fa-sign-out" aria-hidden="true"></i></button>
+</nav>
+</header>

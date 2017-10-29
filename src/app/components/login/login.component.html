@@ -1,0 +1,53 @@
+<div class="container containerSpace" *ngIf="message">
+  <div class="alert alert-danger" role="alert">
+    <i class="fa fa-exclamation-triangle alert-icon" aria-hidden="true"></i> {{message}}
+  </div>
+</div>
+
+<!--Loader-->
+<app-loader></app-loader>
+
+<div class="container">
+  <form novalidate (ngSubmit)="login(loginForm)" [formGroup]="loginForm">
+    <!--Email Field-->
+    <div class="containerSpace">
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-envelope-o"></i></span>
+        <input type="email" name="email" placeholder="Your email address" formControlName="email" class="form-control">
+      </div>
+    </div>
+    <!--Email Validation error-->
+    <div class="containerSpace">
+      <div class="alert alert-danger" *ngIf="loginForm.get('email').hasError('required') && loginForm.get('email').touched">
+        Email er krævet!
+      </div>
+      <div class="alert alert-danger" *ngIf="loginForm.get('email').hasError('pattern') && loginForm.get('email').touched">
+        Din email er ikke valid!
+      </div>
+    </div>
+    <!--Password Field-->
+    <div class="containerSpace">
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-lock"></i></span>
+        <input type="password" name="password" placeholder="Your password" formControlName="password" class="form-control">
+      </div>
+    </div>
+    <!--Password Validation error-->
+    <div class="containerSpace">
+      <div class="alert alert-danger" *ngIf="loginForm.get('password').hasError('required') && loginForm.get('password').touched">
+        Password er krævet!
+      </div>
+      <div class="alert alert-danger" *ngIf="loginForm.get('password').hasError('minLength') && loginForm.get('password').touched">
+        Password skal være mindst 5 tegn!
+      </div>
+    </div>
+    <div class="containerSpace">
+      <div style="text-align: center;">
+          <p><a routerLink="/register" routerLinkActive="active">Opret bruger</a> | <a routerLink="/register" routerLinkActive="active">Glemt password?</a></p>
+      </div>
+      <div class="containerSpace">
+        <button type="submit" style="width: 100%" class="btn btn-primary loginBtn" [disabled]="loginForm.invalid">Login</button>
+      </div>
+    </div>
+  </form>
+</div>

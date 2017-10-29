@@ -1,0 +1,12 @@
+.done {
+  color:red;
+  text-decoration: line-through;
+}
+
+.addBtn {
+  color:green;
+}
+
+.small-text {
+  font-size: 12px;
+}

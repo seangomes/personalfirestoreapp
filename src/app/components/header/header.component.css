@@ -1,0 +1,17 @@
+.paddinItems {
+  margin-right: 10px;
+}
+
+.buttonWidth {
+  width: 50px;
+}
+
+.logo {
+  font-size: 20px;
+  color: white;
+}
+
+header {
+  border-bottom: 2px solid #FFFFFF;
+  min-height: 65px;
+}

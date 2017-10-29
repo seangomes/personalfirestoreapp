@@ -1,0 +1,46 @@
+
+
+<div class="container containerSpace">
+  <app-alert></app-alert>
+</div>
+
+<div class="container containerSpace" *ngIf="addNewTodoField">
+  <app-add-todo></app-add-todo>
+</div>
+
+<!--Loader-->
+<app-loader></app-loader>
+
+<div class="container containerSpace">
+  <div class="card" style="width: 20rem;">
+    <div class="card-header">
+      <h4 class="text-center">Todoliste
+        <span class="pull-right" (click)="addNewTodoField= !addNewTodoField">
+          <i class="fa fa-plus-circle addBtn" aria-hidden="true"></i>
+        </span>
+      </h4>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" *ngFor="let todo of todos">
+        <div class="row">
+          <div class="col-9">
+            <p (click)="toogleStatus(todo)" [ngClass]="{'done': todo.status}">{{todo.content}}</p>
+          </div>
+          <div class="col">
+            <button class="btn btn-danger btn-sm pull-right" (click)="deleteTodo(todo)">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="col-6 text-center">
+            <p class="text-secondary small-text">
+              <i class="fa fa-calendar" aria-hidden="true"></i> {{todo.date}}</p>
+          </div>
+          <div class="col-6 text-center">
+            <p class="text-secondary small-text">
+              <i class="fa fa-user-circle-o" aria-hidden="true"></i> {{todo.createdBy}}</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

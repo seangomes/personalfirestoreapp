@@ -1,0 +1,22 @@
+{
+  "short_name": "Personal app",
+  "name": "My personal app",
+  "start_url": "/",
+  "theme_color": "#538199",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/assets/images/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/images/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ]
+
+}

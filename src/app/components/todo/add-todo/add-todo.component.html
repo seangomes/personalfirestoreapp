@@ -1,0 +1,19 @@
+<!--Loader-->
+<app-loader></app-loader>
+<form novalidate (ngSubmit)="addTodo(newTodoForm)" [formGroup]="newTodoForm">
+  <div class="input-group">
+    <input type="text" class="form-control" formControlName="content" placeholder="Tilføj todo" aria-label="Search for...">
+    <span class="input-group-btn">
+      <button class="btn btn-success" type="submit" [disabled]="newTodoForm.invalid">Tilføj!</button>
+    </span>
+  </div>
+  <!--Conent Validation error-->
+  <div class="containerSpace">
+      <div class="alert alert-danger" *ngIf="newTodoForm.get('content').hasError('required') && newTodoForm.get('content').touched">
+        Der skal angives en tekst
+      </div>
+      <div class="alert alert-danger" *ngIf="newTodoForm.get('content').hasError('minLength') && newTodoForm.get('content').touched">
+        Teksten skal være min. 5 bogstaver langt!
+      </div>
+    </div>
+</form>

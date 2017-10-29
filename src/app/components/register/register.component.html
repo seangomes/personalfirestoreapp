@@ -1,0 +1,84 @@
+<div class="container containerSpace">
+
+  <h4 class="text-center">Opret bruger</h4>
+
+  <!--Error message-->
+
+  <div>
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{errorMessage}}
+    </div>
+  </div>
+
+  <!--Loader-->
+  <app-loader></app-loader>
+
+  <form novalidate (ngSubmit)="signup(signupForm)" [formGroup]="signupForm">
+    <!--Email Field-->
+    <div class="containerSpace">
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">
+          <i class="fa fa-envelope-o"></i>
+        </span>
+        <input type="email" name="email" placeholder="Indtast email" formControlName="email" class="form-control">
+      </div>
+    </div>
+    <!--Email Validation error-->
+    <div class="containerSpace">
+      <div class="alert alert-danger" *ngIf="signupForm.get('email').hasError('required') && signupForm.get('email').touched">
+        Email er krævet!
+      </div>
+      <div class="alert alert-danger" *ngIf="signupForm.get('email').hasError('pattern') && signupForm.get('email').touched">
+        Din email er ikke valid!
+      </div>
+    </div>
+    <!--Password Field-->
+    <div class="containerSpace">
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">
+          <i class="fa fa-lock"></i>
+        </span>
+        <input type="password" name="password" placeholder="Indtast Password" formControlName="password" class="form-control">
+      </div>
+    </div>
+    <!--Password Validation error-->
+    <div class="containerSpace">
+      <div class="alert alert-danger" *ngIf="signupForm.get('password').hasError('required') && signupForm.get('password').touched">
+        Password er krævet!
+      </div>
+      <div class="alert alert-danger" *ngIf="signupForm.get('password').hasError('minLength') && signupForm.get('password').touched">
+        Password skal være mindst 5 tegn!
+      </div>
+    </div>
+    <!--Username Field-->
+    <div class="containerSpace">
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">
+          <i class="fa fa-user"></i>
+        </span>
+        <input type="text" name="username" placeholder="Indtast brugernavn" formControlName="displayName" class="form-control">
+      </div>
+    </div>
+    <!--Username Validation error-->
+    <div class="containerSpace">
+      <div class="alert alert-danger" *ngIf="signupForm.get('displayName').hasError('required') && signupForm.get('displayName').touched">
+        Brugernavn er krævet!
+      </div>
+      <div class="alert alert-danger" *ngIf="signupForm.get('displayName').hasError('minLength') && signupForm.get('displayName').touched">
+        Brugernavn skal være mindst 3 tegn!
+      </div>
+    </div>
+    <div class="containerSpace">
+      <div style="text-align: center;">
+        <p>
+          <a routerLink="/login" routerLinkActive="active">
+            <p>Tilbage til login!</p>
+          </a>
+      </div>
+      <div class="containerSpace">
+        <button type="submit" style="width: 100%" class="btn btn-primary loginBtn" [disabled]="signupForm.invalid">Opret mig!</button>
+      </div>
+    </div>
+  </form>
+
+</div>

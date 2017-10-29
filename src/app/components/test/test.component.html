@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="container">
+    <button class="btn btn-danger" (click)="testCurrentUser()">Get currentUser</button>
+  </div>
+</div>
+
+
+<div class="row" *ngIf="currentUser">
+  <div class="container">
+    {{currentUser | json}}
+  </div>
+</div>

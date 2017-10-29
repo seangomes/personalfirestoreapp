@@ -1,1 +1,81 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+/* Main colors */
+/*
+
+https://color.adobe.com/da/casa-todos-prueba-2-color-theme-8015519/edit/?copy=true
+
+blue:       #339FCC
+gray:       #538199
+lightgreen: #71FFA0
+orange:     #FF8144
+pink:       #A54DCC
+
+*/
+
+
+
+.containerSpace {
+  margin-top: 20px;
+}
+
+.contentSpace {
+  margin-bottom: 5px;
+}
+
+p {
+  font-size: 15px;
+}
+
+
+
+.mainContent {
+  background-color: #339FCC;
+}
+
+/* .contentBackground1 {
+
+  background: rgba(147,206,222,1);
+background: -moz-linear-gradient(left, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 41%, rgba(73,165,191,1) 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(147,206,222,1)), color-stop(41%, rgba(117,189,209,1)), color-stop(100%, rgba(73,165,191,1)));
+background: -webkit-linear-gradient(left, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 41%, rgba(73,165,191,1) 100%);
+background: -o-linear-gradient(left, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 41%, rgba(73,165,191,1) 100%);
+background: -ms-linear-gradient(left, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 41%, rgba(73,165,191,1) 100%);
+background: linear-gradient(to right, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 41%, rgba(73,165,191,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#93cede', endColorstr='#49a5bf', GradientType=1 );
+} */
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* height: 60px; */
+}
+
+header, footer {
+  background-color: #339FCC;
+}
+
+
+
+footer {
+  border-top: 3px solid white;
+}
+
+p, h5, h4, h6 {
+  color: #000000;
+}
+
+a {
+  color: #000000;
+  text-decoration: none;
+  background-color: transparent;
+  -webkit-text-decoration-skip: objects;
+}
+
+.active {
+  -webkit-box-shadow: 0px 0px 1px 3px #000000;
+  -moz-box-shadow: 0px 0px 1px 3px #000000;
+  box-shadow: 0px 0px 3px 1px #000000;
+}
