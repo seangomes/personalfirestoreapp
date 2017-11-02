@@ -4,4 +4,5 @@ export class User {
   photoURL: string;
   email: string;
   password?: string;
+  status: "offline";
 }

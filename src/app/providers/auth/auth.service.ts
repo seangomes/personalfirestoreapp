@@ -93,7 +93,8 @@ export class AuthService {
                   displayName: displayName,
                   email: email,
                   photoURL: 'https://www.fancyhands.com/images/default-avatar-250x250.png',
-                  userId: user.uid
+                  userId: user.uid,
+                  status: "offline"
                 });
               })
           }
@@ -121,9 +122,13 @@ export class AuthService {
   //Signout
   signout(): void {
     this.afAuth.auth.signOut();
+    //resetting subjects
     this.isLoggedInSubject.next(false);
+    this.userSubject.next(null);
+    this.authStateSubject.next(null);
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
+    //Routing
     this.router.navigate(['/login']);
   }
 }

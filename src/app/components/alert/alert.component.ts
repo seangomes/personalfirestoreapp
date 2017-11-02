@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AlertService } from "../../providers/alert/alert.service";
 import { Alert, AlertType } from "../../models/alert";
+import { ISubscription } from "rxjs/Subscription";
 
 @Component({
   selector: 'app-alert',
   templateUrl: './alert.component.html',
   styleUrls: ['./alert.component.css']
 })
-export class AlertComponent implements OnInit {
+export class AlertComponent implements OnInit, OnDestroy {
+
+  private getAlertSubscription: ISubscription;
 
   alerts: Alert[] = [];
 
@@ -48,5 +51,12 @@ export class AlertComponent implements OnInit {
         return 'alert alert-warning';
     }
   }
+
+  ngOnDestroy(): void {
+    if(this.getAlertSubscription !== undefined) {
+      this.getAlertSubscription.unsubscribe();
+    }
+  }
+
 
 }

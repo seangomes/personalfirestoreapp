@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Todo } from "../../../models/todo";
 import { TodoService } from "../../../providers/todo/todo.service";
 import { LoaderService } from "../../../providers/loader/loader.service";
 import { AlertService } from "../../../providers/alert/alert.service";
 import { FormControl, FormBuilder, FormGroup,  Validators } from '@angular/forms';
+import { ISubscription } from "rxjs/Subscription";
 
 
 @Component({
@@ -12,7 +13,10 @@ import { FormControl, FormBuilder, FormGroup,  Validators } from '@angular/forms
   templateUrl: './add-todo.component.html',
   styleUrls: ['./add-todo.component.css']
 })
-export class AddTodoComponent implements OnInit {
+export class AddTodoComponent implements OnInit, OnDestroy {
+
+  private loaderSubscription : ISubscription;
+  private addTodoSubscription : ISubscription;
 
   newTodoForm: FormGroup;
   loader: boolean;
@@ -20,7 +24,7 @@ export class AddTodoComponent implements OnInit {
 
   ngOnInit() {
     this.addNewTodoForm();
-    this.loaderService.getLoader().subscribe(loaderData => this.loader = loaderData);
+    this.loaderSubscription = this.loaderService.getLoader().subscribe(loaderData => this.loader = loaderData);
   }
 
   addNewTodoForm() {
@@ -41,4 +45,15 @@ export class AddTodoComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    if(this.loaderSubscription !== undefined) {
+      this.loaderSubscription.unsubscribe();
+    }
+    if(this.addTodoSubscription !== undefined) {
+      this.addTodoSubscription.unsubscribe();
+    }
+
+
+
+  }
 }

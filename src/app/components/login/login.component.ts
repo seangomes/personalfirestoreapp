@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from "../../providers/auth/auth.service";
+import { ISubscription } from "rxjs/Subscription";
 import { Router } from "@angular/router";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoaderService } from "../../providers/loader/loader.service";
@@ -10,22 +11,25 @@ import { User } from "../../models/user";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
-  private isLoggedIn : boolean;
+  private loaderSubscription : ISubscription;
+  private authSubscription : ISubscription;
+
+  private isLoggedIn: boolean;
   loginForm: FormGroup;
   message: string;
-  loader : boolean;
+  loader: boolean;
   constructor(private authService: AuthService, private loaderService: LoaderService, private router: Router, private fb: FormBuilder) { }
 
   ngOnInit() {
 
     //Connecting loader
-    this.loaderService.getLoader().subscribe(loaderData => this.loader = loaderData);
+    this.loaderSubscription = this.loaderService.getLoader().subscribe(loaderData => this.loader = loaderData);
 
     //if logged in redirect
-    this.authService.isLoggedIn().subscribe((isLoggedIn => {
-      if(isLoggedIn) {
+    this.authSubscription = this.authService.isLoggedIn().subscribe((isLoggedIn => {
+      if (isLoggedIn) {
         this.router.navigate(['/todolist']);
       }
     }));
@@ -42,7 +46,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  login({value, valid} : { value : User, valid: boolean }) {
+  login({ value, valid }: { value: User, valid: boolean }) {
     //Starts the loader
     this.loaderService.showLoader();
     this.authService.login(value.email, value.password)
@@ -53,4 +57,9 @@ export class LoginComponent implements OnInit {
       .catch((error) => this.message = error);
   }
 
+  //Clean up the subscriptions
+  ngOnDestroy() {
+    this.loaderSubscription.unsubscribe();
+    this.authSubscription.unsubscribe();
+  }
 }

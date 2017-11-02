@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup,  Validators } from '@angular/forms';
 import { Router } from "@angular/router";
+import { ISubscription } from "rxjs/Subscription";
 import { AuthService } from "../../providers/auth/auth.service";
 import { LoaderService } from "../../providers/loader/loader.service";
 import { User } from "../../models/user";
+
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
+
+  private loaderSubscription : ISubscription;
 
   signupForm: FormGroup;
   errorMessage : string;
@@ -49,6 +54,11 @@ export class RegisterComponent implements OnInit {
           this.router.navigateByUrl("/login");
         }
       });
+  }
+
+  //Clean up the subscriptions
+  ngOnDestroy() {
+    this.loaderSubscription.unsubscribe();
   }
 
 }

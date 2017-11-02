@@ -48,7 +48,7 @@ export class TodoService {
           createdBy: userInfo.displayName,
           date: dateNow,
           status: false,
-          id: autoId
+          id: autoId,
         };
         //add to database
         this.afs.collection('todos').doc(autoId).set(newTodo)
