@@ -14,18 +14,16 @@ export class ShopService {
 
   private productCollection: AngularFirestoreCollection<Product>;
   private productsSubject: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>(null);
-  private productsSubscription : ISubscription;
+  private productsSubscription: ISubscription;
   private shopListCollection: AngularFirestoreCollection<Shoplist>;
   private shopListSubject: BehaviorSubject<Shoplist[]> = new BehaviorSubject<Shoplist[]>(null);
   private userObjectSubject: BehaviorSubject<User> = new BehaviorSubject<User>(null);
-  private totalPriceCalcSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-  private singleShopListSubject : BehaviorSubject<Shoplist> = new BehaviorSubject<Shoplist>(null);
+  private singleShopListSubject: BehaviorSubject<Shoplist> = new BehaviorSubject<Shoplist>(null);
 
 
   public products$: Observable<Product[]> = this.productsSubject.asObservable();
   public shopLists$: Observable<Shoplist[]> = this.shopListSubject.asObservable();
   public userObject$: Observable<User> = this.userObjectSubject.asObservable();
-  public totalPriceCalc$: Observable<string> = this.totalPriceCalcSubject.asObservable();
   public singleShopList$: Observable<Shoplist> = this.singleShopListSubject.asObservable();
 
 
@@ -41,10 +39,10 @@ export class ShopService {
     this.shopListCollection = this.afs.collection('shoplists');
     this.shopListCollection.valueChanges().subscribe((data) => {
 
-      if(data) {
+      if (data) {
         this.shopListSubject.next(data);
         data.forEach(shopList => {
-          if(shopList.active) {
+          if (shopList.active) {
             this.singleShopListSubject.next(shopList);
           }
         });
@@ -53,7 +51,7 @@ export class ShopService {
     })
   }
 
-  getActiveShoplist() : Observable<Shoplist> {
+  getActiveShoplist(): Observable<Shoplist> {
     return this.singleShopList$;
   }
 
@@ -61,16 +59,74 @@ export class ShopService {
     return this.products$;
   }
 
-  getAllShopLists() : Observable<Shoplist[]> {
+  getAllShopLists(): Observable<Shoplist[]> {
     return this.shopLists$;
   }
 
+  calculateTotalPrice(price: string, methodStatus: string) {
+    if (methodStatus == "add") {
+      let shopListObj = this.singleShopListSubject.getValue();
 
-  addProduct(product: Product) {
-    if(product) {
+      //Change strings to numbers
+      let totalPriceNumber = Number(shopListObj.totalPrice);
+      let priceNumber = Number(price);
+      //Regner
+      let newTotalPriceNumber = totalPriceNumber + priceNumber;
+      let newTotalPriceString = newTotalPriceNumber.toFixed(2);
+      shopListObj.totalPrice = newTotalPriceString;
+      this.singleShopListSubject.next(shopListObj);
+    }
+    if (methodStatus == "remove") {
+      let shopListObj = this.singleShopListSubject.getValue();
 
+      //Change strings to numbers
+      let totalPriceNumber = Number(shopListObj.totalPrice);
+      let priceNumber = Number(price);
+      //Regner
+      let newTotalPriceNumber = totalPriceNumber - priceNumber;
+      let newTotalPriceString = newTotalPriceNumber.toFixed(2);
+      shopListObj.totalPrice = newTotalPriceString;
+      this.singleShopListSubject.next(shopListObj);
+    }
+  }
 
+  addProduct(product: Product, shopList: Shoplist) {
+    if (product !== undefined && shopList !== undefined) {
+      let shopListTotalPrice = shopList.totalPrice;
+      shopList.products.push(product);
+      //Calculate price
+      this.calculateTotalPrice(product.price, "add");
+      let shopListId = this.singleShopListSubject.getValue().id;
+      let shopListssss = this.afs.collection('shoplists').doc(shopListId);
+      shopListssss.update({
+        products: shopList.products,
+        totalPrice: this.singleShopListSubject.getValue().totalPrice
+      })
+        .then((data) => {
+          console.log(data);
+          console.log(shopList);
+        });
+    }
+  }
 
+  removeProduct(product: Product, shopList: Shoplist) {
+    if (product !== undefined && shopList !== undefined) {
+      let shopListTotalPrice = shopList.totalPrice;
+      // //Find the index
+      const index: number = shopList.products.indexOf(product)
+      shopList.products.splice(index, 1);
+      //Calculate price
+      this.calculateTotalPrice(product.price, "remove");
+      let shopListId = this.singleShopListSubject.getValue().id;
+      let shopListssss = this.afs.collection('shoplists').doc(shopListId);
+      shopListssss.update({
+        products: shopList.products,
+        totalPrice: this.singleShopListSubject.getValue().totalPrice
+      })
+        .then((data) => {
+          console.log(data);
+          console.log(shopList);
+        });
     }
   }
 
@@ -78,7 +134,7 @@ export class ShopService {
     let autoId = this.afs.createId();
     let dateNow = moment(Date.now()).format('DD-MM-YYYY');
 
-    let newShopList : Shoplist = {
+    let newShopList: Shoplist = {
       id: autoId,
       date: dateNow,
       products: [],
@@ -88,36 +144,12 @@ export class ShopService {
 
     this.afs.collection('shoplists').doc(autoId).set(newShopList)
       .then(() => {
-        console.log("shopliste er gemt");
+        //console.log("shopliste er gemt");
       })
       .catch((error) => {
-        console.log("FEJL: ", error);
+        //console.log("FEJL: ", error);
       });
 
   }
-
-
-  // createShopList(products: Product[]) {
-
-  //   let totalPricesNumber = 0;
-
-  //   products.forEach(product => {
-  //     let price = Number(product.price)
-  //     totalPricesNumber + price;
-  //   });
-
-  //   let totalPriceCalculated = String(totalPricesNumber);
-
-  //   let newShopList : Shoplist = {
-  //     createdBy:"Sean Test",
-  //     id:"11111",
-  //     products: products,
-  //     totalPrice: totalPriceCalculated
-  //   }
-
-  //   console.log(newShopList);
-  // }
-
-
 
 }

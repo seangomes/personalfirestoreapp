@@ -1,7 +1,7 @@
 <!--Add shoplist-->
 
 <div class="container text-center" *ngIf="shopList === null">
-  <button class="btn btn-success" (click)="createNewShopList()" >Opret indkøbsliste</button>
+  <button class="btn btn-success" (click)="createNewShopList()">Opret indkøbsliste</button>
 </div>
 
 
@@ -9,17 +9,22 @@
 <div id="accordion" role="tablist" *ngIf="products">
   <div class="card">
     <div class="card-header" role="tab" id="headingOne">
-      <h5 class="mb-0">
-        <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          <span class="text-center">Produkter</span>
+      <h5 class="mb-0 text-center">
+        <a data-toggle="collapse" *ngIf="isCollapsed" (click)="togglePanel()" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <span>Produkter</span><span class="pull-right"><i class="fa fa-arrow-up" aria-hidden="true"></i>
+          </span>
         </a>
+        <a data-toggle="collapse" *ngIf="!isCollapsed" (click)="togglePanel()" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <span>Produkter</span><span class="pull-right"><i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </span>
+          </a>
       </h5>
     </div>
 
     <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
         <div class="row">
-          <div class="col-4" *ngFor="let product of products" (click)="addProduct(product)">
+          <div class="col-4" *ngFor="let product of products" (click)="addProduct(product, shopList)">
             <p class="small-text">{{product.name }}</p>
           </div>
         </div>
@@ -28,16 +33,39 @@
   </div>
 </div>
 <br>
-<br>
+
 
 <!--Shoplist-->
 <div class="container" style="background-color:white;" *ngIf="shopList !== null">
-  <div class="row">
-    <!--Number of items-->
-    <div class="col-2">
-      <span class="badge badge-secondary">count</span>
-    </div>
-    <div class="col-8">Navn</div>
-    <div class="col-2">pris</div>
+  <br>
+  <!--Overskrift-->
+  <div>
+    <h2 class="text-center">Indkøbsseddel</h2>
   </div>
+  <br>
+  <div class="row" *ngFor="let shopListProduct of shopList.products">
+    <!--Number of items-->
+    <div class="col-3">
+      <span (click)="removeProduct(shopListProduct, shopList)">
+        <i class="fa fa-times cross" aria-hidden="true"></i>
+      </span>
+      <div class="pull-right">
+        <span class="badge badge-secondary">1x</span>
+      </div>
+    </div>
+    <!-- Product name -->
+    <div class="col-6">{{shopListProduct.name}}</div>
+    <!-- Product price -->
+    <div class="col-3 contentSpace">
+      <span class="pull-right">{{shopListProduct.price}} kr.</span>
+    </div>
+  </div>
+  <hr>
+  <!--Total price-->
+  <div class="row">
+    <div class="col-12">
+      <span class="pull-right">{{shopList.totalPrice}} kr.</span>
+    </div>
+  </div>
+  <br>
 </div>

@@ -18,6 +18,7 @@ export class ShoplistComponent implements OnInit, OnDestroy {
   shopList: Shoplist;
   products: Product[];
   loader: boolean;
+  isCollapsed : boolean = true;
 
   constructor(private shopService: ShopService, private loaderService: LoaderService) { }
 
@@ -50,17 +51,20 @@ export class ShoplistComponent implements OnInit, OnDestroy {
     this.shopService.createNewShopList();
   }
 
-  addProduct(product: Product) {
-
-    console.log(product);
-    this.shopService.addProduct(product);
+  togglePanel() {
+    this.isCollapsed = !this.isCollapsed;
   }
 
+  addProduct(product: Product, shopList: Shoplist) {
+    console.log(product);
+    this.shopService.addProduct(product, shopList);
+  }
 
-
-  // createTestShopList() {
-  //   this.shopService.createShopList();
-  // }
+  removeProduct(product: Product, shoplist: Shoplist) {
+    if(product !== undefined && shoplist !== undefined) {
+      this.shopService.removeProduct(product, shoplist);
+    }
+  }
 
   ngOnDestroy(): void {
     if (this.loaderSubscription !== undefined) {
