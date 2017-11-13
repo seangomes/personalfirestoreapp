@@ -30,7 +30,7 @@ export class ShopService {
   constructor(private afs: AngularFirestore) {
 
     //Init all products
-    this.productCollection = this.afs.collection('products');
+    this.productCollection = this.afs.collection('products', ref => ref.orderBy('name'));
     this.productsSubscription = this.productCollection.valueChanges().subscribe((data) => {
       this.productsSubject.next(data);
     });
@@ -62,6 +62,10 @@ export class ShopService {
   getAllShopLists(): Observable<Shoplist[]> {
     return this.shopLists$;
   }
+
+  // findProducts(start, end) : Observable<Product[]> {
+
+  // }
 
   calculateTotalPrice(price: string, methodStatus: string) {
     if (methodStatus == "add") {

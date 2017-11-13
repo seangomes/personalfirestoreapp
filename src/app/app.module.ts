@@ -34,6 +34,7 @@ import { RegisterComponent } from './components/register/register.component';
 
 //GUARDS
 import { AuthGuard } from "./guards/auth.guard";
+import { ProductFilterPipe } from './pipes/product-filter.pipe';
 
 //ROUTES
 const appRoutes: Routes = [
@@ -74,7 +75,8 @@ export const firebaseConfig = {
     HeaderComponent,
     TestComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ProductFilterPipe
   ],
   imports: [
     BrowserModule,

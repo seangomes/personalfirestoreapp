@@ -3,6 +3,8 @@ import { Shoplist, Product } from "../../../models/shoplist";
 import { ShopService } from "../../../providers/shop/shop.service";
 import { LoaderService } from "../../../providers/loader/loader.service";
 import { ISubscription } from "rxjs/Subscription";
+import { Observable, BehaviorSubject } from 'rxjs';
+
 
 @Component({
   selector: 'app-shoplist',
@@ -18,7 +20,10 @@ export class ShoplistComponent implements OnInit, OnDestroy {
   shopList: Shoplist;
   products: Product[];
   loader: boolean;
-  isCollapsed : boolean = true;
+  isCollapsed: boolean = true;
+
+  //for search
+  searchText : string;
 
   constructor(private shopService: ShopService, private loaderService: LoaderService) { }
 
@@ -60,8 +65,20 @@ export class ShoplistComponent implements OnInit, OnDestroy {
     this.shopService.addProduct(product, shopList);
   }
 
+  addNewProductToProductList(productName:string) {
+    let prodExsist : boolean = false;
+    if(productName !== "") {
+      //check if it exsist in list
+      this.products.forEach(prod => {
+        if(prod.name.toLowerCase === productName.toLowerCase) {
+
+        }
+      })
+    }
+  }
+
   removeProduct(product: Product, shoplist: Shoplist) {
-    if(product !== undefined && shoplist !== undefined) {
+    if (product !== undefined && shoplist !== undefined) {
       this.shopService.removeProduct(product, shoplist);
     }
   }

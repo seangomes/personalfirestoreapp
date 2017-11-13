@@ -4,4 +4,5 @@ export class Todo {
   date:string;
   createdBy:string;
   status:boolean;
+  rangOrder: Number;
 }

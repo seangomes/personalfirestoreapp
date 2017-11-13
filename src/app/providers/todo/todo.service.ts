@@ -22,7 +22,7 @@ export class TodoService {
   constructor(private afs: AngularFirestore, private authService: AuthService) {
 
     //init todolist
-    this.itemsCollection = afs.collection<Todo>('todos');
+    this.itemsCollection = afs.collection<Todo>('todos', ref => ref.orderBy('rangOrder'));
     this.itemsCollection.valueChanges().subscribe((data) => {
       this.todosSubject.next(data);
     });
@@ -49,6 +49,7 @@ export class TodoService {
           date: dateNow,
           status: false,
           id: autoId,
+          rangOrder: 0
         };
         //add to database
         this.afs.collection('todos').doc(autoId).set(newTodo)
@@ -78,6 +79,16 @@ export class TodoService {
     return this.message$;
   }
 
+  moveTodoRankOrder(todo: Todo, move: string) {
+    if(move === "up") {
+      //get upper todo from FB
+
+    }
+    if(move === "down") {
+
+    }
+  }
+
   toggleStatus(todo: Todo) {
     if (todo.status) {
       this.afs.collection('todos').doc(todo.id).set({
@@ -85,7 +96,8 @@ export class TodoService {
         createdBy: todo.createdBy,
         date: todo.date,
         id: todo.id,
-        status: false
+        status: false,
+        rangOrder: todo.rangOrder
       });
       return;
     }
@@ -95,7 +107,8 @@ export class TodoService {
         createdBy: todo.createdBy,
         date: todo.date,
         id: todo.id,
-        status: true
+        status: true,
+        rangOrder: todo.rangOrder
       });
       return;
     }
