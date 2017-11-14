@@ -4,6 +4,8 @@
   <button class="btn btn-success" (click)="createNewShopList()">Opret indkøbsliste</button>
 </div>
 
+<!--Loader-->
+<app-loader></app-loader>
 
 <!--Chose products-->
 <div id="accordion" class="containerSpace" role="tablist" *ngIf="products">
@@ -69,7 +71,7 @@
       </div>
     </div>
     <!-- Product name -->
-    <div class="col-6">{{shopListProduct.name}}</div>
+    <div class="col-6" (click)="toggleShopListProduct(shopListProduct)" [ngClass]="{'done': shopListProduct.status}">{{shopListProduct.name}}</div>
     <!-- Product price -->
     <div class="col-3 contentSpace">
       <span class="pull-right">{{shopListProduct.price}} kr.</span>

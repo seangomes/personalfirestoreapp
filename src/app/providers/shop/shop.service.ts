@@ -73,7 +73,8 @@ export class ShopService {
       let newProduct : Product = {
         id: autoId,
         name: productNameToUpper,
-        price: "0"
+        price: "0",
+        status: true
       };
       //Save in database
       this.afs.collection('products').doc(autoId).set(newProduct)
@@ -158,6 +159,21 @@ export class ShopService {
   deleteProduct(product: Product) {
     if(product) {
       this.afs.collection('products').doc(product.id).delete();
+    }
+  }
+
+  toggleStatus(product: Product) {
+    if (product.status) {
+      this.afs.collection('shoplists').doc(product.id).update({
+        status: false,
+      });
+      return;
+    }
+    else {
+      this.afs.collection('shoplists').doc(product.id).update({
+        status: true,
+      });
+      return;
     }
   }
 
