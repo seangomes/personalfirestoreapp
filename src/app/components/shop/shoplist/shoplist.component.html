@@ -6,7 +6,7 @@
 
 
 <!--Chose products-->
-<div id="accordion" role="tablist" *ngIf="products">
+<div id="accordion" class="containerSpace" role="tablist" *ngIf="products">
   <div class="card">
     <div class="card-header" role="tab" id="headingOne">
       <h5 class="mb-0 text-center">
@@ -32,15 +32,15 @@
           <div class="input-group">
             <input type="text" class="form-control form-control-sm" [(ngModel)]="searchText" placeholder="Søg/opret produkt" aria-label="Search for...">
             <span class="input-group-btn">
-              <button (click)="addNewProductToProductList(searchText)" class="btn btn-success btn-sm" type="button"><i class="fa fa-plus-circle" aria-hidden="true"></i>
+              <button (click)="addNewProductToProductList(searchText)" *ngIf="searchText !== ''" class="btn btn-success btn-sm" type="button"><i class="fa fa-plus-circle" aria-hidden="true"></i>
               </button>
             </span>
           </div>
         </div>
         <!--Products-->
         <div class="row containerSpace">
-          <div class="col-4" *ngFor="let product of products | productFilter : searchText" (click)="addProduct(product, shopList)">
-            <p class="small-text">{{product.name }}</p>
+          <div class="col-4" *ngFor="let product of products | productFilter : searchText">
+            <p class="small-text"><span (click)="addProduct(product, shopList)">{{product.name }}</span> <span (click)="deleteProduct(product)" class="cross pull-right">x</span></p>
           </div>
         </div>
       </div>

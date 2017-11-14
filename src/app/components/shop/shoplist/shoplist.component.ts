@@ -23,7 +23,7 @@ export class ShoplistComponent implements OnInit, OnDestroy {
   isCollapsed: boolean = true;
 
   //for search
-  searchText : string;
+  searchText : string = "";
 
   constructor(private shopService: ShopService, private loaderService: LoaderService) { }
 
@@ -35,10 +35,8 @@ export class ShoplistComponent implements OnInit, OnDestroy {
     this.shopService.getActiveShoplist().subscribe((data) => {
       this.shopList = data;
       this.getAllProducts();
-      console.log(this.shopList);
     });
   }
-
 
   getAllProducts() {
     this.loaderService.showLoader();
@@ -70,16 +68,27 @@ export class ShoplistComponent implements OnInit, OnDestroy {
     if(productName !== "") {
       //check if it exsist in list
       this.products.forEach(prod => {
-        if(prod.name.toLowerCase === productName.toLowerCase) {
-
+        if(prod.name.toLowerCase() === productName.toLowerCase()) {
+          prodExsist = true; 
         }
-      })
+      });
+
+      if(!prodExsist) {
+        this.shopService.addNewProductToProductList(productName);
+      }
+      this.searchText = "";
     }
   }
 
   removeProduct(product: Product, shoplist: Shoplist) {
     if (product !== undefined && shoplist !== undefined) {
       this.shopService.removeProduct(product, shoplist);
+    }
+  }
+
+  deleteProduct(product: Product) {
+    if(product !== undefined || product !== null) {
+      this.shopService.deleteProduct(product);
     }
   }
 
@@ -93,7 +102,5 @@ export class ShoplistComponent implements OnInit, OnDestroy {
     if (this.shopListSubscription !== undefined) {
       this.shopListSubscription.unsubscribe();
     }
-
-
   }
 }

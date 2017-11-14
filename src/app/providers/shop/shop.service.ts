@@ -63,9 +63,30 @@ export class ShopService {
     return this.shopLists$;
   }
 
-  // findProducts(start, end) : Observable<Product[]> {
+  addNewProductToProductList(productName:string) {
+    if(productName !== "") {
+      let productNameToUpper = productName.charAt(0).toUpperCase() + productName.slice(1);
+      //Generate id
+      let autoId = this.afs.createId()
 
-  // }
+      //New object
+      let newProduct : Product = {
+        id: autoId,
+        name: productNameToUpper,
+        price: "0"
+      };
+      //Save in database
+      this.afs.collection('products').doc(autoId).set(newProduct)
+          .then(() => {
+            let currentShopList = this.singleShopListSubject.getValue();
+
+            this.addProduct(newProduct, currentShopList);
+          })
+          .catch((error) => {
+            console.log("fejl ved oprettelse af nyt produkt");
+          })
+    }
+  }
 
   calculateTotalPrice(price: string, methodStatus: string) {
     if (methodStatus == "add") {
@@ -131,6 +152,12 @@ export class ShopService {
           console.log(data);
           console.log(shopList);
         });
+    }
+  }
+
+  deleteProduct(product: Product) {
+    if(product) {
+      this.afs.collection('products').doc(product.id).delete();
     }
   }
 
