@@ -8,6 +8,7 @@ import { Shoplist, Product } from "../../models/shoplist";
 import * as moment from 'moment';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { refCount } from 'rxjs/operators/refCount';
 
 @Injectable()
 export class ShopService {
@@ -162,11 +163,12 @@ export class ShopService {
     }
   }
 
-  toggleStatus(product: Product) {
+  toggleStatus(product: Product, shopList: Shoplist) {
     if (product.status) {
-      this.afs.collection('shoplists').doc(product.id).update({
-        status: false,
-      });
+      product.status = false;
+
+
+
       return;
     }
     else {

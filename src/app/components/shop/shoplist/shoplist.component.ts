@@ -28,7 +28,7 @@ export class ShoplistComponent implements OnInit, OnDestroy {
   constructor(private shopService: ShopService, private loaderService: LoaderService) { }
 
   ngOnInit() {
-    
+
     //init loader status
     this.loaderSubscription = this.loaderService.getLoader().subscribe(loaderData => this.loader = loaderData);
 
@@ -60,14 +60,13 @@ export class ShoplistComponent implements OnInit, OnDestroy {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  toggleShopListProduct(product: Product) {
+  toggleShopListProduct(product: Product, shopList: Shoplist) {
     if(product) {
-      this.shopService.toggleStatus(product);
+      this.shopService.toggleStatus(product,shopList);
     }
   }
 
   addProduct(product: Product, shopList: Shoplist) {
-    console.log(product);
     this.shopService.addProduct(product, shopList);
   }
 
@@ -77,7 +76,7 @@ export class ShoplistComponent implements OnInit, OnDestroy {
       //check if it exsist in list
       this.products.forEach(prod => {
         if(prod.name.toLowerCase() === productName.toLowerCase()) {
-          prodExsist = true; 
+          prodExsist = true;
         }
       });
 
